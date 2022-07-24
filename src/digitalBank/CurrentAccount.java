@@ -1,5 +1,7 @@
 package digitalBank;
 
+import javax.swing.*;
+
 public class CurrentAccount extends Account{
     public CurrentAccount(Customer customer) {
         super(customer);
@@ -7,7 +9,13 @@ public class CurrentAccount extends Account{
 
     @Override
     public void printStatement() {
-        System.out.println("=== Current Account Bank Statement ===");
-        super.printAccountStatement();
+        Window window = new Window();
+
+        window.showMessage(
+                "======== Current Account Bank Statement ======== \n" +
+                        super.printAccountStatement(),
+                "Current Account Statement",
+                JOptionPane.PLAIN_MESSAGE
+        );
     }
 }

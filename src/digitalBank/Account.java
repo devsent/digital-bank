@@ -1,6 +1,8 @@
 package digitalBank;
 
-public abstract class Account implements IAccount{
+import javax.swing.*;
+
+public abstract class Account implements IAccount {
     private static final int STANDARD_AGENCY = 1;
     private static int ACCOUNT_NUMBER_ACC = 1;
     protected int agency;
@@ -16,25 +18,34 @@ public abstract class Account implements IAccount{
 
     @Override
     public void withdraw(double amount) {
+        if (this.balance >= amount) {
         balance -= amount;
+        } else {
+            JOptionPane.showMessageDialog(null,"Insufficient funds.");
+        }
     }
 
     @Override
     public void deposit(double amount) {
         balance += amount;
+        this.printStatement();
     }
 
     @Override
     public void transfer(double amount, IAccount targetAccount) {
-        this.withdraw(amount);
-        targetAccount.deposit(amount);
+            if (this.balance >= amount) {
+                this.withdraw(amount);
+                targetAccount.deposit(amount);
+            } else {
+                JOptionPane.showMessageDialog(null,"Insufficient funds.");
+            }
     }
 
-    protected void printAccountStatement() {
-        System.out.printf("Customer: %s%n", this.customer.getName());
-        System.out.printf("Agency: %d%n", this.agency);
-        System.out.printf("Number: %d%n", this.number);
-        System.out.printf("Balance: R$ %.2f%n", this.balance);
+    protected String printAccountStatement() {
+        return String.format("Holder: %s%n", this.customer.getName()) +
+                String.format("Agency: %d%n", this.agency) +
+                String.format("Number: %d%n", this.number) +
+                String.format("Balance: R$ %.2f%n", this.balance);
     }
 
     public int getAgency() {
